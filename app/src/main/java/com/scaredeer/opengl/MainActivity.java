@@ -29,8 +29,10 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
     private final float[] mVPMatrix = new float[16];
 
     private Bitmap mBitmap1;
+    private Texture mTexture1;
     private Tile mTile1;
     private Bitmap mBitmap2;
+    private Texture mTexture2;
     private Tile mTile2;
 
     @Override
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
 
         setContentView(mGLSurfaceView);
 
-        mBitmap1 = Tile.loadBitmap(this, R.drawable.pale_14_14552_6451);
-        mBitmap2 = Tile.loadBitmap(this, R.drawable.pale_14_14553_6451);
+        mBitmap1 = Texture.loadBitmap(this, R.drawable.pale_14_14552_6451);
+        mBitmap2 = Texture.loadBitmap(this, R.drawable.pale_14_14553_6451);
     }
 
     @Override
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         mShaderProgram = new ShaderProgram();
+        mTexture1 = new Texture(mBitmap1);
+        mTexture2 = new Texture(mBitmap2);
     }
 
     // GLSurfaceView.Renderer (2/3)
@@ -129,8 +133,8 @@ public class MainActivity extends AppCompatActivity implements GLSurfaceView.Ren
         // Pass the matrix into the shader program.
         mShaderProgram.setMVPMatrix(mVPMatrix);
 
-        mTile1 = new Tile(mShaderProgram, 0, 0, mBitmap1);
-        mTile2 = new Tile(mShaderProgram, 256, 0, mBitmap2);
+        mTile1 = new Tile(mShaderProgram, 0, 0, mTexture1.name);
+        mTile2 = new Tile(mShaderProgram, 256, 0, mTexture2.name);
     }
 
     // GLSurfaceView.Renderer (3/3)
