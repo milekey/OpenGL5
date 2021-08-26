@@ -1,28 +1,17 @@
 package com.scaredeer.opengl;
 
 import static android.opengl.GLES20.GL_FLOAT;
-import static android.opengl.GLES20.GL_NEAREST;
 import static android.opengl.GLES20.GL_TEXTURE0;
 import static android.opengl.GLES20.GL_TEXTURE_2D;
-import static android.opengl.GLES20.GL_TEXTURE_MAG_FILTER;
-import static android.opengl.GLES20.GL_TEXTURE_MIN_FILTER;
 import static android.opengl.GLES20.GL_TRIANGLE_STRIP;
 import static android.opengl.GLES20.glActiveTexture;
 import static android.opengl.GLES20.glBindTexture;
-import static android.opengl.GLES20.glDeleteTextures;
 import static android.opengl.GLES20.glDrawArrays;
 import static android.opengl.GLES20.glEnableVertexAttribArray;
-import static android.opengl.GLES20.glGenTextures;
-import static android.opengl.GLES20.glTexParameteri;
 import static android.opengl.GLES20.glUniform1i;
 import static android.opengl.GLES20.glVertexAttribPointer;
-import static android.opengl.GLUtils.texImage2D;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
