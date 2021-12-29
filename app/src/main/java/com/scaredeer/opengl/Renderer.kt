@@ -2,7 +2,7 @@ package com.scaredeer.opengl
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.opengl.GLES20
+import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
 import android.opengl.Matrix
 import android.util.Log
@@ -41,7 +41,7 @@ class Renderer(context: Context?) : GLSurfaceView.Renderer {
 
     override fun onSurfaceCreated(gl10: GL10, eglConfig: EGLConfig) {
         Log.v(TAG, "onSurfaceCreated")
-        GLES20.glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
 
         mShaderProgram = ShaderProgram()
 
@@ -54,7 +54,7 @@ class Renderer(context: Context?) : GLSurfaceView.Renderer {
     override fun onSurfaceChanged(gl10: GL10, width: Int, height: Int) {
         Log.v(TAG, "onSurfaceChanged")
         // Set the OpenGL viewport to fill the entire surface.
-        GLES20.glViewport(0, 0, width, height)
+        glViewport(0, 0, width, height)
 
         /*
         frustum は lookAtM で決定される視軸に対して相対的な視界範囲を決めるという形で使われるものと思われ、
@@ -109,7 +109,7 @@ class Renderer(context: Context?) : GLSurfaceView.Renderer {
 
     override fun onDrawFrame(gl10: GL10) {
         // Clear the rendering surface.
-        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT)
 
         // Draw tiles
         mTile1!!.draw()
