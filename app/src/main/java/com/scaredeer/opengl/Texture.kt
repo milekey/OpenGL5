@@ -19,7 +19,6 @@ class Texture(bitmap: Bitmap) {
          * @param resourceId R.drawable.XXX
          * @return Bitmap オブジェクト
          */
-        @JvmStatic
         fun loadBitmap(context: Context, resourceId: Int): Bitmap? {
             val options = BitmapFactory.Options()
             options.inScaled = false
@@ -34,7 +33,6 @@ class Texture(bitmap: Bitmap) {
         }
     }
 
-    @JvmField
     val name: Int
 
     init {

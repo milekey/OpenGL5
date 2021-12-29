@@ -152,11 +152,8 @@ class ShaderProgram {
     private val mShaderProgram: Int
     private val mUMvpMatrix: Int
 
-    @JvmField
     val aPosition: Int
-    @JvmField
     val aTextureCoordinates: Int
-    @JvmField
     val uTextureUnit: Int
 
     init {
