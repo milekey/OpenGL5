@@ -26,14 +26,14 @@ class Renderer(context: Context) : GLSurfaceView.Renderer {
     }
 
     private val bitmap1: Bitmap? = loadBitmap(context, R.drawable.pale_14_14552_6451)
-    private var texture1: Texture? = null
-    private var tile1: Tile? = null
+    private lateinit var texture1: Texture
+    private lateinit var tile1: Tile
 
     private val bitmap2: Bitmap? = loadBitmap(context, R.drawable.pale_14_14553_6451)
-    private var texture2: Texture? = null
-    private var tile2: Tile? = null
+    private lateinit var texture2: Texture
+    private lateinit var tile2: Tile
 
-    private var shaderProgram: ShaderProgram? = null
+    private lateinit var shaderProgram: ShaderProgram
 
     private val projectionMatrix = FloatArray(16)
     private val viewMatrix = FloatArray(16)
@@ -99,12 +99,12 @@ class Renderer(context: Context) : GLSurfaceView.Renderer {
         )
 
         // setMvpMatrix（glUniformMatrix4fv）するにあたってあらかじめ use（glUseProgram）する必要がある
-        shaderProgram!!.use()
+        shaderProgram.use()
         // Pass the matrix into the shader program.
-        shaderProgram!!.setMvpMatrix(vpMatrix)
+        shaderProgram.setMvpMatrix(vpMatrix)
 
-        tile1 = Tile(shaderProgram!!, 0, 0, texture1!!.name)
-        tile2 = Tile(shaderProgram!!, 256, 0, texture2!!.name)
+        tile1 = Tile(shaderProgram, 0, 0, texture1.name)
+        tile2 = Tile(shaderProgram, 256, 0, texture2.name)
     }
 
     override fun onDrawFrame(gl10: GL10) {
@@ -112,7 +112,7 @@ class Renderer(context: Context) : GLSurfaceView.Renderer {
         glClear(GL_COLOR_BUFFER_BIT)
 
         // Draw tiles
-        tile1!!.draw()
-        tile2!!.draw()
+        tile1.draw()
+        tile2.draw()
     }
 }
