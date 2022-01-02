@@ -183,7 +183,7 @@ class ShaderProgram {
      *
      * @param [mvpMatrix] MvpMatrix
      */
-    fun setMvpMatrix(mvpMatrix: FloatArray?) {
+    fun setMvpMatrix(mvpMatrix: FloatArray) {
         // Pass the matrix into the shader program.
         glUniformMatrix4fv(uMvpMatrix, 1, false, mvpMatrix, 0)
     }
