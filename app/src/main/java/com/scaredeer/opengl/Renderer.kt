@@ -19,36 +19,36 @@ import javax.microedition.khronos.opengles.GL10
  * MainActivity はその他の UI のコードなども盛り込まれることになるので、コードの見通しが悪くなり、
  * あまり実用的ではないので、素直に分離している。
  */
-class Renderer(context: Context?) : GLSurfaceView.Renderer {
+class Renderer(context: Context) : GLSurfaceView.Renderer {
 
     companion object {
         private val TAG = Renderer::class.simpleName
     }
 
-    private val mBitmap1: Bitmap? = loadBitmap(context!!, R.drawable.pale_14_14552_6451)
-    private var mTexture1: Texture? = null
-    private var mTile1: Tile? = null
+    private val bitmap1: Bitmap? = loadBitmap(context, R.drawable.pale_14_14552_6451)
+    private var texture1: Texture? = null
+    private var tile1: Tile? = null
 
-    private val mBitmap2: Bitmap? = loadBitmap(context!!, R.drawable.pale_14_14553_6451)
-    private var mTexture2: Texture? = null
-    private var mTile2: Tile? = null
+    private val bitmap2: Bitmap? = loadBitmap(context, R.drawable.pale_14_14553_6451)
+    private var texture2: Texture? = null
+    private var tile2: Tile? = null
 
-    private var mShaderProgram: ShaderProgram? = null
+    private var shaderProgram: ShaderProgram? = null
 
-    private val mProjectionMatrix = FloatArray(16)
-    private val mViewMatrix = FloatArray(16)
-    private val mVpMatrix = FloatArray(16)
+    private val projectionMatrix = FloatArray(16)
+    private val viewMatrix = FloatArray(16)
+    private val vpMatrix = FloatArray(16)
 
     override fun onSurfaceCreated(gl10: GL10, eglConfig: EGLConfig) {
         Log.v(TAG, "onSurfaceCreated")
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f)
+        glClearColor(0f, 0f, 0f, 0f)
 
-        mShaderProgram = ShaderProgram()
+        shaderProgram = ShaderProgram()
 
-        mTexture1 = Texture(mBitmap1!!)
-        mBitmap1.recycle()
-        mTexture2 = Texture(mBitmap2!!)
-        mBitmap2.recycle()
+        texture1 = Texture(bitmap1!!)
+        bitmap1.recycle()
+        texture2 = Texture(bitmap2!!)
+        bitmap2.recycle()
     }
 
     override fun onSurfaceChanged(gl10: GL10, width: Int, height: Int) {
@@ -74,7 +74,7 @@ class Renderer(context: Context?) : GLSurfaceView.Renderer {
         ピクセルサイズに基くことが可能となる。
          */
         Matrix.frustumM(
-            mProjectionMatrix, 0,
+            projectionMatrix, 0,
             -width / 4f, width / 4f, -height / 4f, height / 4f,
             width / 4f, width / 2f
         )
@@ -88,23 +88,23 @@ class Renderer(context: Context?) : GLSurfaceView.Renderer {
         eyeZ = -eyeX となっているわけである。
          */
         Matrix.setLookAtM(
-            mViewMatrix, 0,
+            viewMatrix, 0,
             width / 2f, height / 2f, -width / 2f,
             width / 2f, height / 2f, 1f,
             0f, -1f, 0f
         )
         Matrix.multiplyMM(
-            mVpMatrix, 0,
-            mProjectionMatrix, 0, mViewMatrix, 0
+            vpMatrix, 0,
+            projectionMatrix, 0, viewMatrix, 0
         )
 
         // setMvpMatrix（glUniformMatrix4fv）するにあたってあらかじめ use（glUseProgram）する必要がある
-        mShaderProgram!!.use()
+        shaderProgram!!.use()
         // Pass the matrix into the shader program.
-        mShaderProgram!!.setMvpMatrix(mVpMatrix)
+        shaderProgram!!.setMvpMatrix(vpMatrix)
 
-        mTile1 = Tile(mShaderProgram!!, 0, 0, mTexture1!!.name)
-        mTile2 = Tile(mShaderProgram!!, 256, 0, mTexture2!!.name)
+        tile1 = Tile(shaderProgram!!, 0, 0, texture1!!.name)
+        tile2 = Tile(shaderProgram!!, 256, 0, texture2!!.name)
     }
 
     override fun onDrawFrame(gl10: GL10) {
@@ -112,7 +112,7 @@ class Renderer(context: Context?) : GLSurfaceView.Renderer {
         glClear(GL_COLOR_BUFFER_BIT)
 
         // Draw tiles
-        mTile1!!.draw()
-        mTile2!!.draw()
+        tile1!!.draw()
+        tile2!!.draw()
     }
 }

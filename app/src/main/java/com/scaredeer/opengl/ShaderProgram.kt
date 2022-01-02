@@ -8,11 +8,10 @@ class ShaderProgram {
     companion object {
         private val TAG = ShaderProgram::class.simpleName
 
-        private const val U_MVP_MATRIX = "u_MVPMatrix"
+        private const val U_MVP_MATRIX = "u_MvpMatrix"
         private const val A_POSITION = "a_Position"
         private const val A_TEXTURE_COORDINATES = "a_TextureCoordinates"
         private const val V_TEXTURE_COORDINATES = "v_TextureCoordinates"
-        private const val U_TEXTURE_UNIT = "u_TextureUnit"
 
         private const val VERTEX_SHADER = """
             uniform mat4 $U_MVP_MATRIX;
@@ -24,6 +23,8 @@ class ShaderProgram {
                 $V_TEXTURE_COORDINATES = $A_TEXTURE_COORDINATES;
             }
         """
+
+        private const val U_TEXTURE_UNIT = "u_TextureUnit"
 
         private const val FRAGMENT_SHADER = """
             precision mediump float;
@@ -40,8 +41,8 @@ class ShaderProgram {
          * Compiles a shader, returning the OpenGL object ID.
          *
          * @see <a href="https://media.pragprog.com/titles/kbogla/code/AirHockey1/src/com/airhockey/android/util/ShaderHelper.java">OpenGL ES 2 for Android</a>
-         * @param type       GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
-         * @param shaderCode String data of shader code
+         * @param [type]       GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+         * @param [shaderCode] String data of shader code
          * @return the OpenGL object ID (or 0 if compilation failed)
          */
         private fun compileShader(type: Int, shaderCode: String): Int {
@@ -87,8 +88,8 @@ class ShaderProgram {
          * program. Returns the OpenGL program object ID, or 0 if linking failed.
          *
          * @see <a href="https://media.pragprog.com/titles/kbogla/code/AirHockey1/src/com/airhockey/android/util/ShaderHelper.java">OpenGL ES 2 for Android</a>
-         * @param vertexShaderId   OpenGL object ID of vertex shader
-         * @param fragmentShaderId OpenGL object ID of fragment shader
+         * @param [vertexShaderId]   OpenGL object ID of vertex shader
+         * @param [fragmentShaderId] OpenGL object ID of fragment shader
          * @return OpenGL program object ID (or 0 if linking failed)
          */
         private fun linkProgram(vertexShaderId: Int, fragmentShaderId: Int): Int {
@@ -133,7 +134,7 @@ class ShaderProgram {
          * Validates an OpenGL program. Should only be called when developing the application.
          *
          * @see <a href="https://media.pragprog.com/titles/kbogla/code/AirHockey1/src/com/airhockey/android/util/ShaderHelper.java">OpenGL ES 2 for Android</a>
-         * @param programObjectId OpenGL program object ID to validate
+         * @param [programObjectId] OpenGL program object ID to validate
          * @return boolean
          */
         private fun validateProgram(programObjectId: Int): Boolean {
@@ -149,9 +150,9 @@ class ShaderProgram {
         }
     }
 
-    private val mShaderProgram: Int
-    private val mUMvpMatrix: Int
+    private val shaderProgram: Int
 
+    private val uMvpMatrix: Int
     val aPosition: Int
     val aTextureCoordinates: Int
     val uTextureUnit: Int
@@ -162,28 +163,28 @@ class ShaderProgram {
         val fragmentShader = compileShader(GL_FRAGMENT_SHADER, FRAGMENT_SHADER)
 
         // Link them into a shader program.
-        mShaderProgram = linkProgram(vertexShader, fragmentShader)
-        validateProgram(mShaderProgram)
+        shaderProgram = linkProgram(vertexShader, fragmentShader)
+        validateProgram(shaderProgram)
 
-        // Retrieve pointer indices for input variables.
-        mUMvpMatrix = glGetUniformLocation(mShaderProgram, U_MVP_MATRIX)
-        aPosition = glGetAttribLocation(mShaderProgram, A_POSITION)
-        aTextureCoordinates = glGetAttribLocation(mShaderProgram, A_TEXTURE_COORDINATES)
-        uTextureUnit = glGetUniformLocation(mShaderProgram, U_TEXTURE_UNIT)
+        // Retrieve pointer indices to input to variables.
+        uMvpMatrix = glGetUniformLocation(shaderProgram, U_MVP_MATRIX)
+        aPosition = glGetAttribLocation(shaderProgram, A_POSITION)
+        aTextureCoordinates = glGetAttribLocation(shaderProgram, A_TEXTURE_COORDINATES)
+        uTextureUnit = glGetUniformLocation(shaderProgram, U_TEXTURE_UNIT)
     }
 
     fun use() {
         // Set the current OpenGL shader program to this program.
-        glUseProgram(mShaderProgram)
+        glUseProgram(shaderProgram)
     }
 
     /**
      * バーテックスシェーダーで定義している MvpMatrix をセットし直すためのメソッド。
      *
-     * @param mvpMatrix MvpMatrix
+     * @param [mvpMatrix] MvpMatrix
      */
     fun setMvpMatrix(mvpMatrix: FloatArray?) {
         // Pass the matrix into the shader program.
-        glUniformMatrix4fv(mUMvpMatrix, 1, false, mvpMatrix, 0)
+        glUniformMatrix4fv(uMvpMatrix, 1, false, mvpMatrix, 0)
     }
 }

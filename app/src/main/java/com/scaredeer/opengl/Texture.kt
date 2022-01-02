@@ -15,8 +15,8 @@ class Texture(bitmap: Bitmap) {
         /**
          * リソースから Bitmap を読み込みたい場合に。
          *
-         * @param context    Context オブジェクト
-         * @param resourceId R.drawable.XXX
+         * @param [context]    Context オブジェクト
+         * @param [resourceId] R.drawable.XXX
          * @return Bitmap オブジェクト
          */
         fun loadBitmap(context: Context, resourceId: Int): Bitmap? {
@@ -40,7 +40,7 @@ class Texture(bitmap: Bitmap) {
     }
 
     /**
-     * @param bitmap Loads a texture from the Bitmap
+     * @param [bitmap] Loads a texture from the Bitmap
      * @return The name (as int) for the corresponding texture object in OpenGL system.
      * Returns 0 if loading failed.
      */
